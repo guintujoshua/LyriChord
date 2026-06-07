@@ -5,14 +5,14 @@
 
   <span class="spacer"></span>
 
-  <button mat-button routerLink="/">
-  Home
-</button>
- <button mat-button routerLink="/SongList">
-  Song
-</button>
-  <button mat-button>Artists</button>
-  <button mat-raised-button color="accent">
-    Login
-  </button>
+  <div class="nav-actions">
+    <button mat-button routerLink="/">Home</button>
+    <button mat-button routerLink="/SongList">Songs</button>
+    <button mat-button>Artists</button>
+    <button mat-icon-button (click)="toggleDarkMode()" aria-label="Toggle dark mode">
+      <mat-icon>{{ isDark ? 'dark_mode' : 'light_mode' }}</mat-icon>
+    </button>
+    <button mat-raised-button color="accent">Login</button>
+  </div>
+
 </mat-toolbar>

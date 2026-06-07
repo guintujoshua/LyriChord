@@ -1,0 +1,63 @@
+.song-list-container {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.search-field {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.song-table {
+  width: 100%;
+  min-width: 620px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+h2 {
+  margin-bottom: 16px;
+}
+
+@media (max-width: 768px) {
+  .song-list-container {
+    padding: 16px;
+  }
+
+  .song-table {
+    min-width: 100%;
+    table-layout: fixed;
+  }
+
+  .mat-column-title,
+  .mat-column-artist,
+  .mat-column-year {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .mat-column-album {
+    display: none;
+  }
+
+  .mat-mdc-paginator-page-size {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .song-list-container {
+    padding: 12px;
+  }
+
+  .mat-column-year {
+    display: none;
+  }
+}
