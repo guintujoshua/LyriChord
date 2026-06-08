@@ -1,0 +1,56 @@
+
+<div class="admin-page">
+	<div class="admin-shell">
+		<app-admin-left-nav></app-admin-left-nav>
+
+		<main class="admin-content">
+			<div class="admin-header">
+				<h1>Dashboard</h1>
+				<p class="admin-sub">Welcome back, Admin</p>
+			</div>
+
+			<div class="stats-grid">
+				@for (stat of stats; track stat.label) {
+					<mat-card class="stat-card">
+						<div class="stat-icon-wrap" [style.background]="stat.color + '22'">
+							<mat-icon [style.color]="stat.color">{{ stat.icon }}</mat-icon>
+						</div>
+						<div class="stat-info">
+							<span class="stat-value">{{ stat.value }}</span>
+							<span class="stat-label">{{ stat.label }}</span>
+						</div>
+					</mat-card>
+				}
+			</div>
+
+			<mat-card class="visits-graph-card">
+				<div class="graph-header">
+					<h2>Visits This Week</h2>
+					<span class="graph-sub">Total Visits Trend</span>
+				</div>
+
+				<div class="chart-wrap">
+					<canvas #visitsChart aria-label="Weekly visits chart"></canvas>
+				</div>
+			</mat-card>
+
+			<div class="quick-actions">
+				<h2>Quick Actions</h2>
+				<div class="action-buttons">
+					<button mat-raised-button color="primary" routerLink="/admin/songs">
+						<mat-icon>add</mat-icon> Add Song
+					</button>
+					<button mat-stroked-button routerLink="/admin/users">
+						<mat-icon>person_add</mat-icon> Manage Users
+					</button>
+					<button mat-stroked-button routerLink="/SongList">
+						<mat-icon>open_in_new</mat-icon> View Song List
+					</button>
+				</div>
+			</div>
+		</main>
+	</div>
+
+	
+</div>
+<app-general-footer></app-general-footer>

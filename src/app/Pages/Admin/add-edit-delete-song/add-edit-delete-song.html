@@ -1,0 +1,70 @@
+<h2 mat-dialog-title>
+	@if (mode === 'add') {
+		Add New Song
+	} @else if (mode === 'edit') {
+		Edit Song
+	} @else {
+		{{ isCurrentlyActive ? 'Deactivate Song' : 'Activate Song' }}
+	}
+</h2>
+
+<mat-dialog-content>
+	@if (mode === 'delete') {
+		<p class="confirm-text">
+			This song will be marked as {{ isCurrentlyActive ? 'Inactive' : 'Active' }}. Please confirm.
+		</p>
+	}
+
+	<form class="song-form" [formGroup]="form">
+		<mat-form-field appearance="outline">
+			<mat-label>Title</mat-label>
+			<input matInput formControlName="title" />
+		</mat-form-field>
+
+		<mat-form-field appearance="outline">
+			<mat-label>Artist</mat-label>
+			<input matInput formControlName="artist" />
+		</mat-form-field>
+
+		<div class="row-fields">
+			<mat-form-field appearance="outline">
+				<mat-label>Key</mat-label>
+				<input matInput formControlName="key" />
+			</mat-form-field>
+
+			<mat-form-field appearance="outline">
+				<mat-label>Year</mat-label>
+				<input matInput formControlName="year" />
+			</mat-form-field>
+		</div>
+
+		<mat-form-field appearance="outline">
+			<mat-label>Status</mat-label>
+			<input matInput formControlName="status" />
+		</mat-form-field>
+
+		<mat-form-field appearance="outline">
+			<mat-label>Lyrics With Chords</mat-label>
+			<textarea matInput formControlName="lyricsWithChords" rows="8"></textarea>
+		</mat-form-field>
+	</form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+	<button mat-button type="button" (click)="close()">Cancel</button>
+	<button
+		mat-flat-button
+		type="button"
+		[color]="mode === 'delete' ? 'warn' : 'primary'"
+		[disabled]="mode !== 'delete' && form.invalid"
+		(click)="submit()"
+	>
+		@if (mode === 'add') {
+			Add Song
+		} @else if (mode === 'edit') {
+			Save Changes
+		} @else {
+			{{ isCurrentlyActive ? 'Confirm Deactivate' : 'Confirm Activate' }}
+		}
+	</button>
+</mat-dialog-actions>

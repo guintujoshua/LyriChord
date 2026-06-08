@@ -1,5 +1,5 @@
 .song-list-container {
-  padding: 24px;
+  padding: clamp(12px, 3vw, 24px);
   max-width: 1200px;
   margin: 0 auto;
 }
@@ -22,8 +22,23 @@
   overflow: hidden;
 }
 
+mat-paginator {
+  overflow-x: auto;
+}
+
 h2 {
   margin-bottom: 16px;
+  font-size: clamp(22px, 4vw, 30px);
+}
+
+.song-link {
+  color: var(--mat-sys-primary);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.song-link:hover {
+  text-decoration: underline;
 }
 
 @media (max-width: 768px) {
@@ -32,7 +47,7 @@ h2 {
   }
 
   .song-table {
-    min-width: 100%;
+    min-width: 560px;
     table-layout: fixed;
   }
 
@@ -50,11 +65,21 @@ h2 {
   .mat-mdc-paginator-page-size {
     display: none;
   }
+
+  .mat-mdc-paginator-range-actions {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 2px;
+  }
 }
 
 @media (max-width: 480px) {
   .song-list-container {
     padding: 12px;
+  }
+
+  .song-table {
+    min-width: 480px;
   }
 
   .mat-column-year {

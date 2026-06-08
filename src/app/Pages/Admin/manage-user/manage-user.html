@@ -1,0 +1,74 @@
+<div class="admin-page">
+	<div class="admin-shell">
+		<app-admin-left-nav></app-admin-left-nav>
+
+		<main class="admin-content">
+			<div class="page-header">
+				<div>
+					<h1>Admin Users</h1>
+					<p class="page-sub">Manage users with add, edit, and delete actions.</p>
+				</div>
+
+				<button mat-flat-button color="primary" (click)="openAddDialog()">
+					<mat-icon>person_add</mat-icon>
+					Add User
+				</button>
+			</div>
+
+			<mat-card class="table-card">
+				@if (users.length) {
+					<div class="table-wrap">
+						<table mat-table [dataSource]="users" class="users-table">
+							<ng-container matColumnDef="fullName">
+								<th mat-header-cell *matHeaderCellDef>Name</th>
+								<td mat-cell *matCellDef="let user" [attr.data-label]="'Name'">{{ user.fullName }}</td>
+							</ng-container>
+
+							<ng-container matColumnDef="email">
+								<th mat-header-cell *matHeaderCellDef>Email</th>
+								<td mat-cell *matCellDef="let user" [attr.data-label]="'Email'">{{ user.email }}</td>
+							</ng-container>
+
+							<ng-container matColumnDef="role">
+								<th mat-header-cell *matHeaderCellDef>Role</th>
+								<td mat-cell *matCellDef="let user" [attr.data-label]="'Role'">{{ user.role }}</td>
+							</ng-container>
+
+							<ng-container matColumnDef="status">
+								<th mat-header-cell *matHeaderCellDef>Status</th>
+								<td mat-cell *matCellDef="let user" [attr.data-label]="'Status'">{{ user.status }}</td>
+							</ng-container>
+
+							<ng-container matColumnDef="actions">
+								<th mat-header-cell *matHeaderCellDef>Actions</th>
+								<td mat-cell *matCellDef="let user" class="actions-cell" [attr.data-label]="'Actions'">
+									<div class="actions-wrap">
+										<button mat-stroked-button (click)="openEditDialog(user)">
+											<mat-icon>edit</mat-icon>
+											Edit
+										</button>
+										<button mat-stroked-button [color]="user.status === 'Active' ? 'warn' : 'primary'" (click)="openDeleteDialog(user)">
+											<mat-icon>{{ user.status === 'Active' ? 'toggle_off' : 'toggle_on' }}</mat-icon>
+											{{ user.status === 'Active' ? 'Deactivate' : 'Activate' }}
+										</button>
+									</div>
+								</td>
+							</ng-container>
+
+							<tr mat-header-row *matHeaderRowDef="displayedColumns" class="table-header-row"></tr>
+							<tr mat-row *matRowDef="let row; columns: displayedColumns" class="user-row"></tr>
+						</table>
+					</div>
+				} @else {
+					<div class="empty-state">
+						<mat-icon>group</mat-icon>
+						<p>No users yet. Add your first user.</p>
+						<button mat-flat-button color="primary" (click)="openAddDialog()">Add User</button>
+					</div>
+				}
+			</mat-card>
+		</main>
+	</div>
+
+	<app-general-footer></app-general-footer>
+</div>

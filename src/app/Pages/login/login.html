@@ -1,0 +1,50 @@
+<app-head-tool-bar-nav></app-head-tool-bar-nav>
+
+<section class="login-page">
+  <div class="login-card">
+
+    <div class="login-header">
+      <span class="login-logo">🎵</span>
+      <h1>Welcome back</h1>
+      <p class="login-sub">Sign in to your LyriChord account</p>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="login-form" novalidate>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Email</mat-label>
+        <input matInput type="email" formControlName="email" autocomplete="email" />
+        <mat-icon matPrefix>email</mat-icon>
+        @if (form.controls.email.touched && emailError) {
+          <mat-error>{{ emailError }}</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Password</mat-label>
+        <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password" autocomplete="current-password" />
+        <mat-icon matPrefix>lock</mat-icon>
+        <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword" [attr.aria-label]="'Toggle password visibility'">
+          <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+        @if (form.controls.password.touched && passwordError) {
+          <mat-error>{{ passwordError }}</mat-error>
+        }
+      </mat-form-field>
+
+      <div class="login-actions">
+        <button mat-raised-button color="primary" type="submit" class="full-width login-btn">
+          Sign In
+        </button>
+      </div>
+
+    </form>
+
+    <p class="login-footer-text">
+      Don't have an account? <button type="button" mat-button class="get-started-btn" (click)="openContactDialog()">Get started</button>
+    </p>
+
+  </div>
+</section>
+
+<app-general-footer></app-general-footer>

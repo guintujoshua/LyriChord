@@ -1,0 +1,168 @@
+:host {
+	display: block;
+	min-height: 100dvh;
+}
+
+.admin-page {
+	display: flex;
+	flex-direction: column;
+	min-height: 100dvh;
+}
+
+.admin-shell {
+	display: flex;
+	flex: 1;
+	min-height: 0;
+	background: var(--mat-sys-surface);
+}
+
+.admin-content {
+	flex: 1;
+	padding: clamp(18px, 4vw, 30px) clamp(14px, 3vw, 28px);
+}
+
+.page-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	gap: 14px;
+	margin-bottom: 18px;
+}
+
+h1 {
+	margin: 0 0 4px;
+	font-size: clamp(24px, 4vw, 30px);
+}
+
+.page-sub {
+	margin: 0;
+	color: var(--mat-sys-on-surface-variant);
+}
+
+.table-card {
+	padding: 8px;
+	border-radius: 16px;
+	background: var(--mat-sys-surface-container);
+	box-shadow: none;
+}
+
+.table-wrap {
+	overflow-x: auto;
+}
+
+.users-table {
+	width: 100%;
+	min-width: 680px;
+}
+
+.actions-cell {
+	white-space: nowrap;
+}
+
+.actions-wrap {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	align-items: center;
+
+	button {
+		min-width: 90px;
+	}
+}
+
+.empty-state {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	padding: 36px 12px;
+	text-align: center;
+	color: var(--mat-sys-on-surface-variant);
+
+	mat-icon {
+		font-size: 28px;
+		width: 28px;
+		height: 28px;
+	}
+
+	p {
+		margin: 0;
+	}
+}
+
+@media (max-width: 768px) {
+	.admin-shell {
+		flex-direction: column;
+	}
+
+	.admin-content {
+		padding: 18px 14px;
+	}
+
+	.page-header {
+		flex-direction: column;
+		align-items: stretch;
+	}
+
+	.users-table {
+		min-width: 560px;
+	}
+}
+
+@media (max-width: 600px) {
+	.table-wrap {
+		overflow: visible;
+	}
+
+	.users-table {
+		min-width: 0;
+	}
+
+	.table-header-row {
+		display: none;
+	}
+
+	.user-row {
+		display: block;
+		padding: 10px;
+		margin-bottom: 10px;
+		border-radius: 12px;
+		background: color-mix(in srgb, var(--mat-sys-primary) 7%, transparent);
+	}
+
+	.user-row:last-child {
+		margin-bottom: 0;
+	}
+
+	.user-row td[mat-cell] {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 12px;
+		padding: 8px 4px;
+		border-bottom: 1px solid var(--mat-sys-outline-variant);
+	}
+
+	.user-row td[mat-cell]:last-child {
+		border-bottom: 0;
+	}
+
+	.user-row td[mat-cell]::before {
+		content: attr(data-label);
+		font-size: 12px;
+		font-weight: 700;
+		color: var(--mat-sys-on-surface-variant);
+		flex-shrink: 0;
+	}
+
+	.user-row .actions-wrap {
+		flex-direction: column;
+		align-items: stretch;
+		gap: 6px;
+	}
+
+	.user-row .actions-wrap button {
+		width: 100%;
+	}
+}

@@ -1,0 +1,67 @@
+<app-head-tool-bar-nav></app-head-tool-bar-nav>
+
+<section class="song-page">
+	@if (song(); as currentSong) {
+		<article class="song-card">
+			<h1>{{ currentSong.title }}</h1>
+			<p class="meta">
+				{{ currentSong.artist }} | {{ currentSong.album }} | {{ currentSong.year }}
+			</p>
+
+			<h2>Lyrics with Chords</h2>
+			<div class="key-controls" role="group" aria-label="Key transposition controls">
+				<button type="button" mat-stroked-button (click)="shiftKey(-1)">Key Down</button>
+				<div class="key-buttons">
+					@for (key of keys; track key) {
+						<button type="button" mat-stroked-button [class.active-key]="currentKey() === key" (click)="setKey(key)">
+							{{ key }}
+						</button>
+					}
+				</div>
+				<button type="button" mat-stroked-button (click)="shiftKey(1)">Key Up</button>
+			</div>
+			<p class="key-meta">Original key: {{ currentSong.originalKey }} | Current key: {{ currentKey() }}</p>
+
+			@if (lyricSections().length) {
+				<aside class="section-nav" aria-label="Lyrics sections">
+					@for (section of lyricSections(); track section.id) {
+						<button type="button" mat-stroked-button (click)="scrollToSection(section.id)">
+							{{ section.label }}
+						</button>
+					}
+				</aside>
+			}
+
+			<div class="lyrics-block" aria-label="Song lyrics with chords">
+				@for (line of parsedLyrics(); track $index) {
+					<div class="lyric-line" [attr.id]="line.sectionId || null" [class.empty-line]="line.empty" [class.section-line]="!!line.sectionLabel">
+						@if (line.sectionLabel) {
+							<h3 class="section-label">{{ line.sectionLabel }}</h3>
+						} @else {
+							@for (token of line.tokens; track $index) {
+								@if (token.chord) {
+									<span class="chorded-word" [class.chord-only]="token.chordOnly" [attr.data-placement]="token.placement || 'above-center'">
+										<span class="chord-tag">{{ token.chord }}</span>
+										<span class="lyric-token">{{ token.text }}</span>
+									</span>
+								} @else {
+									<span class="lyric-token">{{ token.text }}</span>
+								}
+							}
+						}
+					</div>
+				}
+			</div>
+
+			<a mat-raised-button color="primary" routerLink="/SongList">Back to Songs</a>
+		</article>
+	} @else {
+		<article class="song-card">
+			<h1>Song not found</h1>
+			<p class="meta">This song slug does not exist in the local library.</p>
+			<a mat-raised-button color="primary" routerLink="/SongList">Back to Songs</a>
+		</article>
+	}
+</section>
+
+<app-general-footer></app-general-footer>

@@ -1,0 +1,43 @@
+<nav class="admin-nav">
+	<div class="nav-brand">
+		<span class="brand-logo">🎵</span>
+		<span class="brand-name">LyriChord</span>
+		<span class="admin-badge">Admin</span>
+	</div>
+
+	<ul class="nav-list">
+		@for (item of navItems; track item.route) {
+			<li>
+				<a
+					class="nav-item"
+					matRipple
+					[routerLink]="item.route"
+					routerLinkActive="active"
+					[routerLinkActiveOptions]="{ exact: item.route === '/admin' }"
+				>
+					<mat-icon class="nav-icon">{{ item.icon }}</mat-icon>
+					<span class="nav-label">{{ item.label }}</span>
+				</a>
+			</li>
+		}
+	</ul>
+
+	<div class="theme-switch">
+		<button
+			type="button"
+			class="theme-toggle-btn"
+			(click)="toggleTheme()"
+			[attr.aria-label]="isDark ? 'Switch to light mode' : 'Switch to dark mode'"
+		>
+			<mat-icon>{{ isDark ? 'dark_mode' : 'light_mode' }}</mat-icon>
+			<span>{{ isDark ? 'Dark Mode' : 'Light Mode' }}</span>
+		</button>
+	</div>
+
+	<div class="nav-footer">
+		<a class="nav-item" matRipple routerLink="/">
+			<mat-icon class="nav-icon">logout</mat-icon>
+			<span class="nav-label">Exit Admin</span>
+		</a>
+	</div>
+</nav>

@@ -1,0 +1,188 @@
+:host {
+	display: block;
+	min-height: 100dvh;
+}
+
+.admin-page {
+	display: flex;
+	flex-direction: column;
+	min-height: calc(100dvh - 64px);
+}
+
+.admin-shell {
+	display: flex;
+	align-items: stretch;
+	flex: 1;
+	min-height: 0;
+	background: var(--mat-sys-surface);
+}
+
+.admin-content {
+	flex: 1;
+	padding: clamp(18px, 4vw, 32px) clamp(14px, 3vw, 28px);
+	overflow-y: auto;
+}
+
+.admin-header {
+	margin-bottom: 28px;
+}
+
+h1 {
+	margin: 0 0 4px;
+	font-size: clamp(24px, 4vw, 28px);
+	font-weight: 700;
+}
+
+.admin-sub {
+	margin: 0;
+	color: var(--mat-sys-on-surface-variant);
+	font-size: 14px;
+}
+
+.stats-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+	gap: 18px;
+	margin-bottom: 36px;
+}
+
+.stat-card {
+	display: flex;
+	align-items: center;
+	gap: 16px;
+	padding: 20px;
+	border-radius: 16px;
+	background: var(--mat-sys-surface-container);
+	box-shadow: none;
+}
+
+.stat-icon-wrap {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 48px;
+	height: 48px;
+	border-radius: 12px;
+	flex-shrink: 0;
+
+	mat-icon {
+		font-size: 26px;
+		width: 26px;
+		height: 26px;
+	}
+}
+
+.stat-info {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+}
+
+.stat-value {
+	font-size: 26px;
+	font-weight: 700;
+	line-height: 1;
+}
+
+.stat-label {
+	font-size: 13px;
+	color: var(--mat-sys-on-surface-variant);
+}
+
+.visits-graph-card {
+	padding: 18px;
+	border-radius: 16px;
+	background: var(--mat-sys-surface-container);
+	box-shadow: none;
+	margin-bottom: 28px;
+}
+
+.graph-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: baseline;
+	gap: 12px;
+	margin-bottom: 14px;
+}
+
+.graph-sub {
+	font-size: 12px;
+	color: var(--mat-sys-on-surface-variant);
+}
+
+.chart-wrap {
+	height: 260px;
+}
+
+.chart-wrap canvas {
+	width: 100% !important;
+	height: 100% !important;
+}
+
+h2 {
+	margin: 0 0 14px;
+	font-size: 18px;
+	font-weight: 600;
+}
+
+.action-buttons {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px;
+
+	button {
+		white-space: nowrap;
+	}
+}
+
+@media (max-width: 768px) {
+	.admin-page {
+		min-height: auto;
+	}
+
+	.admin-shell {
+		flex-direction: column;
+		min-height: auto;
+	}
+
+	.admin-content {
+		padding: 20px 16px;
+	}
+
+	.stats-grid {
+		grid-template-columns: repeat(2, 1fr);
+		gap: 12px;
+	}
+
+	.visits-graph-card {
+		padding: 14px;
+	}
+
+	.chart-wrap {
+		height: 220px;
+	}
+}
+
+@media (max-width: 480px) {
+	.stats-grid {
+		grid-template-columns: 1fr;
+	}
+
+	.stat-card {
+		padding: 16px;
+		gap: 12px;
+	}
+
+	.stat-value {
+		font-size: 22px;
+	}
+
+	.graph-header {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+
+	.chart-wrap {
+		height: 180px;
+	}
+}

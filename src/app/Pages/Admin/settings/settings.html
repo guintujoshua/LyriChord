@@ -1,0 +1,37 @@
+<div class="admin-page">
+	<div class="admin-shell">
+		<app-admin-left-nav></app-admin-left-nav>
+
+		<main class="admin-content">
+			<div class="page-header">
+				<h1>Settings</h1>
+				<p class="page-sub">Configure admin and site behavior.</p>
+			</div>
+
+			<mat-card class="settings-card">
+				<div class="setting-row">
+					<div class="setting-info">
+						<div class="setting-title-wrap">
+							<mat-icon>build_circle</mat-icon>
+							<h2>Maintenance Mode</h2>
+						</div>
+						<p>
+							When enabled, public pages are redirected to a maintenance screen.
+							Admin pages remain accessible.
+						</p>
+					</div>
+
+					<mat-slide-toggle
+						color="primary"
+						[checked]="maintenanceService.isMaintenanceMode()"
+						(change)="onMaintenanceToggle($event)"
+					>
+						{{ maintenanceService.isMaintenanceMode() ? 'On' : 'Off' }}
+					</mat-slide-toggle>
+				</div>
+			</mat-card>
+		</main>
+	</div>
+
+	<app-general-footer></app-general-footer>
+</div>

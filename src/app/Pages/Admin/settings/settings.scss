@@ -1,0 +1,86 @@
+:host {
+	display: block;
+	min-height: 100dvh;
+}
+
+.admin-page {
+	display: flex;
+	flex-direction: column;
+	min-height: 100dvh;
+}
+
+.admin-shell {
+	display: flex;
+	flex: 1;
+	min-height: 0;
+	background: var(--mat-sys-surface);
+}
+
+.admin-content {
+	flex: 1;
+	padding: clamp(18px, 4vw, 30px) clamp(14px, 3vw, 28px);
+}
+
+.page-header {
+	margin-bottom: 18px;
+}
+
+h1 {
+	margin: 0 0 4px;
+	font-size: clamp(24px, 4vw, 30px);
+}
+
+.page-sub {
+	margin: 0;
+	color: var(--mat-sys-on-surface-variant);
+}
+
+.settings-card {
+	padding: 18px;
+	border-radius: 16px;
+	background: var(--mat-sys-surface-container);
+	box-shadow: none;
+}
+
+.setting-row {
+	display: flex;
+	justify-content: space-between;
+	gap: 16px;
+	align-items: center;
+}
+
+.setting-info {
+	max-width: 680px;
+}
+
+.setting-title-wrap {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin-bottom: 6px;
+}
+
+h2 {
+	margin: 0;
+	font-size: 20px;
+}
+
+p {
+	margin: 0;
+	color: var(--mat-sys-on-surface-variant);
+}
+
+@media (max-width: 768px) {
+	.admin-shell {
+		flex-direction: column;
+	}
+
+	.admin-content {
+		padding: 18px 14px;
+	}
+
+	.setting-row {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+}

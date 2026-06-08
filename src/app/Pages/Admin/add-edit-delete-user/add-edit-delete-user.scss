@@ -1,0 +1,44 @@
+.confirm-text {
+	margin: 0 0 12px;
+	color: var(--mat-sys-error);
+}
+
+.user-form {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	width: min(540px, 100%);
+	min-width: 0;
+	padding-top: 8px;
+}
+
+mat-dialog-content {
+	max-height: 84vh;
+	overflow-y: auto;
+	overflow-x: hidden;
+	padding-top: 4px;
+}
+
+mat-form-field {
+	width: 100%;
+}
+
+.user-form mat-form-field:first-child {
+	margin-top: 4px;
+}
+
+.row-fields {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 10px;
+}
+
+@media (max-width: 640px) {
+	.user-form {
+		width: 100%;
+	}
+
+	.row-fields {
+		grid-template-columns: 1fr;
+	}
+}
