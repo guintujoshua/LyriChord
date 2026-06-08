@@ -13,7 +13,7 @@ import { MaintenanceService } from '../../../core/maintenance.service';
   styleUrl: './settings.scss',
 })
 export class Settings {
-  readonly maintenanceService = inject(MaintenanceService);
+  readonly maintenanceService: MaintenanceService = inject(MaintenanceService);
 
   onMaintenanceToggle(event: MatSlideToggleChange): void {
     this.maintenanceService.setMaintenanceMode(event.checked);
