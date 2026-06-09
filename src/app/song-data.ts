@@ -32,6 +32,9 @@ export const SONGS: SongItem[] = [
       '[A]At sasambahin ka sa dakong [C#m]lihim [B]',
       '[E]Mananatili sa iyong [G#m]lilim',
       '[A]Nang masumpungan ka sa dakong [C#m]lihim [B]',
+      '',
+      '[Outro]',
+      '[E]Mananatili sa iyong [G#m]lilim',
     ],
   },
   {

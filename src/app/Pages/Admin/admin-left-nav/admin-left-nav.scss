@@ -135,6 +135,13 @@
 	margin-top: auto;
 	padding: 8px 8px 16px;
 	border-top: 1px solid var(--mat-sys-outline-variant);
+	display: flex;
+	gap: 8px;
+}
+
+.nav-footer .nav-item {
+	flex: 1;
+	justify-content: center;
 }
 
 .nav-footer .nav-item {

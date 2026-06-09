@@ -35,9 +35,13 @@
 	</div>
 
 	<div class="nav-footer">
-		<a class="nav-item" matRipple routerLink="/">
+		<button type="button" class="nav-item" matRipple (click)="logout()">
 			<mat-icon class="nav-icon">logout</mat-icon>
-			<span class="nav-label">Exit Admin</span>
+			<span class="nav-label">Logout</span>
+		</button>
+		<a class="nav-item" matRipple routerLink="/">
+			<mat-icon class="nav-icon">home</mat-icon>
+			<span class="nav-label">Main Page</span>
 		</a>
 	</div>
 </nav>

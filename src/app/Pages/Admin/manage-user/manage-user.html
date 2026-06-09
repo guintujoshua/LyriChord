@@ -16,7 +16,18 @@
 			</div>
 
 			<mat-card class="table-card">
-				@if (users.length) {
+				@if (isLoading) {
+					<div class="empty-state">
+						<mat-icon>hourglass_top</mat-icon>
+						<p>Loading users...</p>
+					</div>
+				} @else if (errorMessage) {
+					<div class="empty-state">
+						<mat-icon>error</mat-icon>
+						<p>{{ errorMessage }}</p>
+						<button mat-flat-button color="primary" (click)="loadUsers()">Retry</button>
+					</div>
+				} @else if (users.length) {
 					<div class="table-wrap">
 						<table mat-table [dataSource]="users" class="users-table">
 							<ng-container matColumnDef="fullName">

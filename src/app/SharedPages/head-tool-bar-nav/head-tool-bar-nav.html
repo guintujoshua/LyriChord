@@ -12,7 +12,11 @@
     <button mat-icon-button (click)="toggleDarkMode()" aria-label="Toggle dark mode">
       <mat-icon>{{ isDark ? 'dark_mode' : 'light_mode' }}</mat-icon>
     </button>
-    <button mat-raised-button color="accent" routerLink="/login">Login</button>
+    @if (isLoggedIn) {
+      <button mat-raised-button color="accent" routerLink="/admin">Dashboard</button>
+    } @else {
+      <button mat-raised-button color="accent" routerLink="/login">Login</button>
+    }
   </div>
 
 </mat-toolbar>

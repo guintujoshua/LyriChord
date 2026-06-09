@@ -1,8 +1,8 @@
-import { Component, computed, effect, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { HeadToolBarNav } from '../../SharedPages/head-tool-bar-nav/head-tool-bar-nav';
 import { GeneralFooter } from '../../SharedPages/general-footer/general-footer';
-import { SONGS } from '../../song-data';
+import { SongService, Song as SongData } from '../../services/song.service';
 import { MatButtonModule } from '@angular/material/button';
 
 interface LyricToken {
@@ -37,8 +37,9 @@ interface LyricSectionNav {
   templateUrl: './song.html',
   styleUrl: './song.scss',
 })
-export class Song {
+export class Song implements OnInit {
   private readonly route = inject(ActivatedRoute);
+  private readonly songService = inject(SongService);
   private readonly noteScale = ['A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#'];
   private readonly flatToSharpMap: Record<string, string> = {
     Bb: 'A#',
@@ -50,11 +51,7 @@ export class Song {
 
   readonly keys = this.noteScale;
   readonly selectedKey = signal<string>('C');
-
-  readonly song = computed(() => {
-    const slug = this.route.snapshot.paramMap.get('slug');
-    return SONGS.find((item) => item.slug === slug) ?? null;
-  });
+  readonly song = signal<SongData | null>(null);
 
   readonly currentKey = computed(() => this.selectedKey());
 
@@ -64,7 +61,7 @@ export class Song {
       return 0;
     }
 
-    const fromIndex = this.getNoteIndex(selectedSong.originalKey);
+    const fromIndex = this.getNoteIndex(selectedSong.key);
     const toIndex = this.getNoteIndex(this.currentKey());
 
     if (fromIndex === -1 || toIndex === -1) {
@@ -81,7 +78,8 @@ export class Song {
       return [];
     }
 
-    return selectedSong.lyricsWithChords.map((line, index) => this.parseLine(line, index, this.semitoneShift()));
+    const normalizedLines = this.normalizeLyricsLines(selectedSong.lyricsWithChords);
+    return normalizedLines.map((line, index) => this.parseLine(line, index, this.semitoneShift()));
   });
 
   readonly lyricSections = computed<LyricSectionNav[]>(() => {
@@ -93,6 +91,45 @@ export class Song {
       }));
   });
 
+  ngOnInit() {
+    const slug = this.route.snapshot.paramMap.get('slug');
+    if (slug) {
+      this.loadSong(slug);
+    }
+  }
+
+  private loadSong(slug: string): void {
+    const id = parseInt(slug, 10);
+    if (!isNaN(id)) {
+      this.songService.getSongById(id).subscribe({
+        next: (data) => {
+          this.song.set(data);
+          this.selectedKey.set(this.normalizeNote(data.key));
+        },
+        error: (err) => {
+          console.error('Failed to load song:', err);
+          this.song.set(null);
+        }
+      });
+    } else {
+      this.songService.getAllSongs().subscribe({
+        next: (songs) => {
+          const found = songs.find(s => s.title.toLowerCase().replace(/\s+/g, '-') === slug);
+          if (found) {
+            this.song.set(found);
+            this.selectedKey.set(this.normalizeNote(found.key));
+          } else {
+            this.song.set(null);
+          }
+        },
+        error: (err) => {
+          console.error('Failed to load songs:', err);
+          this.song.set(null);
+        }
+      });
+    }
+  }
+
   constructor() {
     effect(
       () => {
@@ -102,7 +139,7 @@ export class Song {
           return;
         }
 
-        this.selectedKey.set(this.normalizeNote(selectedSong.originalKey));
+        this.selectedKey.set(this.normalizeNote(selectedSong.key));
       },
       { allowSignalWrites: true },
     );
@@ -158,6 +195,13 @@ export class Song {
 
       if (part.startsWith('[') && part.endsWith(']')) {
         const chordMarker = this.parseChordMarker(part);
+
+        if (!this.isValidChordToken(chordMarker.chord)) {
+          tokens.push({ text: part });
+          pendingChord = undefined;
+          continue;
+        }
+
         const nextVisiblePart = this.findNextVisiblePart(parts, index + 1);
 
         if (!nextVisiblePart || this.isChordMarker(nextVisiblePart)) {
@@ -262,6 +306,11 @@ export class Song {
     };
   }
 
+  private isValidChordToken(value: string): boolean {
+    // Accepts roots A-G with optional accidental and common chord modifiers/slashes.
+    return /^([A-G](?:#|b)?)(?:[a-zA-Z0-9+()/#-]*)?(?:\/[A-G](?:#|b)?(?:[a-zA-Z0-9+()/#-]*)?)?$/.test(value);
+  }
+
   private normalizePlacement(rawPlacement?: string): ChordPlacement | undefined {
     if (!rawPlacement) {
       return undefined;
@@ -289,22 +338,56 @@ export class Song {
   }
 
   private isSectionMarker(trimmedLine: string): boolean {
-    const markerMatch = trimmedLine.match(/^\[(.+)\]$/);
-    if (!markerMatch) {
-      return false;
-    }
-
-    const label = markerMatch[1].trim();
-
+    const label = this.normalizeSectionLabel(trimmedLine);
     if (!label) {
       return false;
     }
 
-    return /^(verse|chorus|refrain|tag|bridge)(\s*\d+)?$/i.test(label);
+    // Accept common worship-song section names with optional numbers/suffixes.
+    return /^(verse|chorus|refrain|tag|bridge|pre\s*-?\s*chorus|intro|outro|hook|interlude|instrumental)(\s*[0-9a-z]+)?$/i.test(label);
   }
 
   private extractSectionLabel(trimmedLine: string): string {
-    return trimmedLine.slice(1, -1).trim();
+    return this.normalizeSectionLabel(trimmedLine);
+  }
+
+  private normalizeSectionLabel(rawLine: string): string {
+    const trimmed = rawLine.trim().replace(/^['"]+|['"]+$/g, '').trim();
+    const bracketedMatch = trimmed.match(/^\[(.+)\]$/);
+    const candidate = (bracketedMatch ? bracketedMatch[1] : trimmed).trim();
+    return candidate.replace(/[:\-]+$/g, '').trim();
+  }
+
+  private normalizeLyricsLines(lines: string[]): string[] {
+    const normalized: string[] = [];
+
+    for (const rawLine of lines) {
+      const line = String(rawLine ?? '').trim();
+      if (!line) {
+        normalized.push('');
+        continue;
+      }
+
+      // Repair malformed CSV-imported lines where section labels are embedded inline.
+      const csvParts = line
+        .split(',')
+        .map((part) => part.trim())
+        .filter((part) => part.length > 0);
+
+      const hasEmbeddedSection = csvParts.some((part) => this.isSectionMarker(part));
+      if (!hasEmbeddedSection) {
+        normalized.push(line);
+        continue;
+      }
+
+      for (const part of csvParts) {
+        if (part.length > 0) {
+          normalized.push(part);
+        }
+      }
+    }
+
+    return normalized;
   }
 
   private buildSectionId(label: string, lineIndex: number): string {

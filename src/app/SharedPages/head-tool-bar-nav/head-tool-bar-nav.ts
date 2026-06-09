@@ -14,6 +14,7 @@ import { RouterLink } from '@angular/router';
 export class HeadToolBarNav implements OnInit {
 
   isDark = false;
+  isLoggedIn = false;
 
   constructor(@Inject(PLATFORM_ID) private platformId: object) { }
 
@@ -23,6 +24,7 @@ export class HeadToolBarNav implements OnInit {
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
     this.isDark = prefersDark;
+    this.isLoggedIn = Boolean(localStorage.getItem('auth_token'));
 
     document.documentElement.classList.toggle('dark-theme', this.isDark);
   }

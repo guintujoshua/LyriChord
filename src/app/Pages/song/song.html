@@ -20,7 +20,7 @@
 				</div>
 				<button type="button" mat-stroked-button (click)="shiftKey(1)">Key Up</button>
 			</div>
-			<p class="key-meta">Original key: {{ currentSong.originalKey }} | Current key: {{ currentKey() }}</p>
+			<p class="key-meta">Original key: {{ currentSong.key }} | Current key: {{ currentKey() }}</p>
 
 			@if (lyricSections().length) {
 				<aside class="section-nav" aria-label="Lyrics sections">

@@ -1,6 +1,6 @@
 import { isPlatformBrowser } from '@angular/common';
 import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatRippleModule } from '@angular/material/core';
 
@@ -26,7 +26,10 @@ export class AdminLeftNav implements OnInit {
 
   isDark = false;
 
-  constructor(@Inject(PLATFORM_ID) private platformId: object) {}
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: object,
+    private router: Router,
+  ) {}
 
   ngOnInit(): void {
     if (!isPlatformBrowser(this.platformId)) {
@@ -43,5 +46,14 @@ export class AdminLeftNav implements OnInit {
 
     this.isDark = !this.isDark;
     document.documentElement.classList.toggle('dark-theme', this.isDark);
+  }
+
+  logout(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.removeItem('auth_token');
+      localStorage.removeItem('user');
+    }
+
+    this.router.navigate(['/login']);
   }
 }
